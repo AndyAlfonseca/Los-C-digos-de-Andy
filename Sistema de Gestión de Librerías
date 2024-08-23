@@ -1,0 +1,271 @@
+USE [master]
+GO
+/****** Base de datos creada por estudiante ******/
+/****** Andy Rafael Alfonseca ******/
+/****** 23-SIIN-1-106 ******/
+
+CREATE DATABASE [libreria]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'libreria', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\DATA\libreria.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'libreria_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.SQL2022\MSSQL\DATA\libreria_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
+GO
+ALTER DATABASE [libreria] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [libreria].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [libreria] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [libreria] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [libreria] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [libreria] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [libreria] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [libreria] SET AUTO_CLOSE ON 
+GO
+ALTER DATABASE [libreria] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [libreria] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [libreria] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [libreria] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [libreria] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [libreria] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [libreria] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [libreria] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [libreria] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [libreria] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [libreria] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [libreria] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [libreria] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [libreria] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [libreria] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [libreria] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [libreria] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [libreria] SET  MULTI_USER 
+GO
+ALTER DATABASE [libreria] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [libreria] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [libreria] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [libreria] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [libreria] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [libreria] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [libreria] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [libreria] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [libreria]
+GO
+/****** Object:  Table [dbo].[autores]    Script Date: 23/8/2024 7:34:19 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[autores](
+	[autor_id] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](255) NOT NULL,
+	[apellido] [varchar](255) NOT NULL,
+	[nacionalidad] [varchar](100) NULL,
+	[fecha_nacimiento] [date] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[autor_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[clientes]    Script Date: 23/8/2024 7:34:20 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[clientes](
+	[cliente_id] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](255) NOT NULL,
+	[apellido] [varchar](255) NOT NULL,
+	[email] [varchar](255) NULL,
+	[telefono] [varchar](15) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[cliente_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[editoriales]    Script Date: 23/8/2024 7:34:20 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[editoriales](
+	[editorial_id] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](255) NOT NULL,
+	[pais] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[editorial_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[libros]    Script Date: 23/8/2024 7:34:20 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[libros](
+	[libro_id] [int] IDENTITY(1,1) NOT NULL,
+	[titulo] [varchar](255) NOT NULL,
+	[isbn] [varchar](13) NOT NULL,
+	[autor_id] [int] NULL,
+	[editorial_id] [int] NULL,
+	[precio] [decimal](10, 2) NOT NULL,
+	[stock] [int] NOT NULL,
+	[fecha_publicacion] [date] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[libro_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ventas]    Script Date: 23/8/2024 7:34:20 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ventas](
+	[venta_id] [int] IDENTITY(1,1) NOT NULL,
+	[cliente_id] [int] NULL,
+	[libro_id] [int] NULL,
+	[cantidad] [int] NOT NULL,
+	[fecha_venta] [date] NOT NULL,
+	[total] [decimal](10, 2) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[venta_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[autores] ON 
+
+INSERT [dbo].[autores] ([autor_id], [nombre], [apellido], [nacionalidad], [fecha_nacimiento]) VALUES (1, N'Gabriel', N'García Márquez', N'Colombiana', CAST(N'1927-03-06' AS Date))
+INSERT [dbo].[autores] ([autor_id], [nombre], [apellido], [nacionalidad], [fecha_nacimiento]) VALUES (2, N'Haruki', N'Murakami', N'Japonesa', CAST(N'1949-01-12' AS Date))
+INSERT [dbo].[autores] ([autor_id], [nombre], [apellido], [nacionalidad], [fecha_nacimiento]) VALUES (3, N'Isabel', N'Allende', N'Chilena', CAST(N'1942-08-02' AS Date))
+INSERT [dbo].[autores] ([autor_id], [nombre], [apellido], [nacionalidad], [fecha_nacimiento]) VALUES (4, N'J.K.', N'Rowling', N'Británica', CAST(N'1965-07-31' AS Date))
+INSERT [dbo].[autores] ([autor_id], [nombre], [apellido], [nacionalidad], [fecha_nacimiento]) VALUES (5, N'Jorge Luis', N'Borges', N'Argentina', CAST(N'1899-08-24' AS Date))
+SET IDENTITY_INSERT [dbo].[autores] OFF
+GO
+SET IDENTITY_INSERT [dbo].[clientes] ON 
+
+INSERT [dbo].[clientes] ([cliente_id], [nombre], [apellido], [email], [telefono]) VALUES (1, N'Carlos', N'Pérez', N'carlos.perez@example.com', N'555-1234')
+INSERT [dbo].[clientes] ([cliente_id], [nombre], [apellido], [email], [telefono]) VALUES (2, N'María', N'González', N'maria.gonzalez@example.com', N'555-5678')
+INSERT [dbo].[clientes] ([cliente_id], [nombre], [apellido], [email], [telefono]) VALUES (3, N'Ana', N'Martínez', N'ana.martinez@example.com', N'555-8765')
+INSERT [dbo].[clientes] ([cliente_id], [nombre], [apellido], [email], [telefono]) VALUES (4, N'Luis', N'Rodríguez', N'luis.rodriguez@example.com', N'555-4321')
+INSERT [dbo].[clientes] ([cliente_id], [nombre], [apellido], [email], [telefono]) VALUES (5, N'Elena', N'López', N'elena.lopez@example.com', N'555-6789')
+SET IDENTITY_INSERT [dbo].[clientes] OFF
+GO
+SET IDENTITY_INSERT [dbo].[editoriales] ON 
+
+INSERT [dbo].[editoriales] ([editorial_id], [nombre], [pais]) VALUES (1, N'Penguin Random House', N'Estados Unidos')
+INSERT [dbo].[editoriales] ([editorial_id], [nombre], [pais]) VALUES (2, N'Alfaguara', N'España')
+INSERT [dbo].[editoriales] ([editorial_id], [nombre], [pais]) VALUES (3, N'Planeta', N'España')
+INSERT [dbo].[editoriales] ([editorial_id], [nombre], [pais]) VALUES (4, N'Tusquets Editores', N'España')
+INSERT [dbo].[editoriales] ([editorial_id], [nombre], [pais]) VALUES (5, N'HarperCollins', N'Reino Unido')
+SET IDENTITY_INSERT [dbo].[editoriales] OFF
+GO
+SET IDENTITY_INSERT [dbo].[libros] ON 
+
+INSERT [dbo].[libros] ([libro_id], [titulo], [isbn], [autor_id], [editorial_id], [precio], [stock], [fecha_publicacion]) VALUES (1, N'Cien años de soledad', N'9780307474728', 1, 2, CAST(15.99 AS Decimal(10, 2)), 100, CAST(N'1967-05-30' AS Date))
+INSERT [dbo].[libros] ([libro_id], [titulo], [isbn], [autor_id], [editorial_id], [precio], [stock], [fecha_publicacion]) VALUES (2, N'Kafka en la orilla', N'9788499895697', 2, 1, CAST(12.99 AS Decimal(10, 2)), 50, CAST(N'2002-09-12' AS Date))
+INSERT [dbo].[libros] ([libro_id], [titulo], [isbn], [autor_id], [editorial_id], [precio], [stock], [fecha_publicacion]) VALUES (3, N'La casa de los espíritus', N'9780525433477', 3, 3, CAST(14.99 AS Decimal(10, 2)), 75, CAST(N'1982-10-15' AS Date))
+INSERT [dbo].[libros] ([libro_id], [titulo], [isbn], [autor_id], [editorial_id], [precio], [stock], [fecha_publicacion]) VALUES (4, N'Harry Potter y la piedra filosofal', N'9780747532699', 4, 5, CAST(19.99 AS Decimal(10, 2)), 120, CAST(N'1997-06-26' AS Date))
+INSERT [dbo].[libros] ([libro_id], [titulo], [isbn], [autor_id], [editorial_id], [precio], [stock], [fecha_publicacion]) VALUES (5, N'Ficciones', N'9788408131978', 5, 4, CAST(10.99 AS Decimal(10, 2)), 30, CAST(N'1944-01-01' AS Date))
+SET IDENTITY_INSERT [dbo].[libros] OFF
+GO
+SET IDENTITY_INSERT [dbo].[ventas] ON 
+
+INSERT [dbo].[ventas] ([venta_id], [cliente_id], [libro_id], [cantidad], [fecha_venta], [total]) VALUES (1, 1, 1, 2, CAST(N'2024-08-15' AS Date), CAST(31.98 AS Decimal(10, 2)))
+INSERT [dbo].[ventas] ([venta_id], [cliente_id], [libro_id], [cantidad], [fecha_venta], [total]) VALUES (2, 2, 3, 1, CAST(N'2024-08-16' AS Date), CAST(14.99 AS Decimal(10, 2)))
+INSERT [dbo].[ventas] ([venta_id], [cliente_id], [libro_id], [cantidad], [fecha_venta], [total]) VALUES (3, 3, 4, 3, CAST(N'2024-08-17' AS Date), CAST(59.97 AS Decimal(10, 2)))
+INSERT [dbo].[ventas] ([venta_id], [cliente_id], [libro_id], [cantidad], [fecha_venta], [total]) VALUES (4, 4, 2, 1, CAST(N'2024-08-18' AS Date), CAST(12.99 AS Decimal(10, 2)))
+INSERT [dbo].[ventas] ([venta_id], [cliente_id], [libro_id], [cantidad], [fecha_venta], [total]) VALUES (5, 5, 5, 1, CAST(N'2024-08-19' AS Date), CAST(10.99 AS Decimal(10, 2)))
+SET IDENTITY_INSERT [dbo].[ventas] OFF
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__clientes__AB6E6164BA8D9ED3]    Script Date: 23/8/2024 7:34:20 p. m. ******/
+ALTER TABLE [dbo].[clientes] ADD UNIQUE NONCLUSTERED 
+(
+	[email] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__libros__99F9D0A424C70FB4]    Script Date: 23/8/2024 7:34:20 p. m. ******/
+ALTER TABLE [dbo].[libros] ADD UNIQUE NONCLUSTERED 
+(
+	[isbn] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[libros]  WITH CHECK ADD FOREIGN KEY([autor_id])
+REFERENCES [dbo].[autores] ([autor_id])
+GO
+ALTER TABLE [dbo].[libros]  WITH CHECK ADD FOREIGN KEY([editorial_id])
+REFERENCES [dbo].[editoriales] ([editorial_id])
+GO
+ALTER TABLE [dbo].[libros]  WITH CHECK ADD  CONSTRAINT [FK_libros_autores] FOREIGN KEY([autor_id])
+REFERENCES [dbo].[autores] ([autor_id])
+GO
+ALTER TABLE [dbo].[libros] CHECK CONSTRAINT [FK_libros_autores]
+GO
+ALTER TABLE [dbo].[libros]  WITH CHECK ADD  CONSTRAINT [FK_libros_editoriales] FOREIGN KEY([editorial_id])
+REFERENCES [dbo].[editoriales] ([editorial_id])
+GO
+ALTER TABLE [dbo].[libros] CHECK CONSTRAINT [FK_libros_editoriales]
+GO
+ALTER TABLE [dbo].[ventas]  WITH CHECK ADD FOREIGN KEY([cliente_id])
+REFERENCES [dbo].[clientes] ([cliente_id])
+GO
+ALTER TABLE [dbo].[ventas]  WITH CHECK ADD FOREIGN KEY([libro_id])
+REFERENCES [dbo].[libros] ([libro_id])
+GO
+ALTER TABLE [dbo].[ventas]  WITH CHECK ADD  CONSTRAINT [FK_ventas_clientes] FOREIGN KEY([cliente_id])
+REFERENCES [dbo].[clientes] ([cliente_id])
+GO
+ALTER TABLE [dbo].[ventas] CHECK CONSTRAINT [FK_ventas_clientes]
+GO
+ALTER TABLE [dbo].[ventas]  WITH CHECK ADD  CONSTRAINT [FK_ventas_libros] FOREIGN KEY([libro_id])
+REFERENCES [dbo].[libros] ([libro_id])
+GO
+ALTER TABLE [dbo].[ventas] CHECK CONSTRAINT [FK_ventas_libros]
+GO
+USE [master]
+GO
+ALTER DATABASE [libreria] SET  READ_WRITE 
+GO
